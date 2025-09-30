@@ -1,0 +1,80 @@
+{% extends 'main_page.html' %}
+{% set active_page = "res" %}
+
+{% block header %}
+  <h1>{% block title %}Results{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <div class="container" id="search_container">
+        <div class="container-fluid">
+            <img src="static/images/giphy.gif" class="rounded mx-auto d-block"; style="width: 10%; height: 10%; margin-top: 50px" alt="Рыбка">
+        </div>
+        <div class="text-center">
+            <p style="font-size: 50px; margin-top: 3%"><b style="font-size: 100px; color: #7ec0d8">P</b>hishing <b style="font-size: 100px; color: #d05e27">W</b>ebsite <b style="font-size: 100px; color: #3ba0c4">D</b>etector</p>
+        </div>
+        <div class="input-group" style="width: 70%; margin-left: 15%; margin-top: 3%">
+            <input type="text" class="form-control" name="url" aria-label="Text input with dropdown button">
+            <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#">Check by ML</a></li>
+                <li><a class="dropdown-item" href="#">Checking certificate</a></li>
+                <li><a class="dropdown-item" href="#">CHeck indexing by Google</a></li>
+                <li><a class="dropdown-item" href="#">Check redirects</a></li>
+                <li><a class="dropdown-item" href="#">Check presence of favicon.ico</a></li>
+                <li><a class="dropdown-item" href="#">Get creation time</a></li>
+               <li><a class="dropdown-item" href="#">Get IP from URL</a></li>
+               <li><a class="dropdown-item" href="#">Check URL on leet text</a></li>
+               <li><a class="dropdown-item" href="#">CHeck if URL contains IP</a></li>
+               <li><a class="dropdown-item" href="#">Check if URL contains @ (At symbol)</a></li>
+               <li><a class="dropdown-item" href="#">Check if URL contains subdomain</a></li>
+               <li><a class="dropdown-item" href="#">Check if site redirects to https from http</a></li>
+               <li><a class="dropdown-item" href="#">Check site URL length</a></li>
+              </ul>
+            <button type="submit" class="btn btn-warning" style="width: 100px">Go</button>
+        </div>
+
+        {% if status == "not_phishing" %}
+        <div class="alert alert-success" style="font-size: 20px; margin-top: 50px; text-align: center">Safe website</div>
+        {% elif status == "phishing" %}
+        <div class="alert alert-danger" style="font-size: 20px; margin-top: 50px; text-align: center">Phishing website</div>
+        {% endif %}
+
+
+        {% if error %}
+            <div class="alert alert-warning" role="alert">
+                <em>{{ error }}</em>
+            </div>
+        {% endif %}
+    <div class="table-responsive">
+        <table class="table" style="margin-top: 50px">
+            <thead>
+                <tr>
+                    <th scope="col" style="font-size: 25px">#</th>
+                    <th scope="col" style="font-size: 25px">Parameter</th>
+                </tr>
+            </thead>
+        <tbody>
+        {% if detailed %}
+        {% for n in range(25) %} <!-- 1 - red, -1 - green, 0 - yellow-->
+            <tr>
+                <td style="font-size: 20px">{{ n+1 }}</td>
+                {% if detailed[n] == 1 %}
+                    <td class="table-danger" style="font-size: 20px">{{ checks[n] }}</td>
+                {% elif detailed[n] == -1 %}
+                    <td class="table-success" style="font-size: 20px">{{ checks[n] }}</td>
+                {% elif detailed[n] == 0 %}
+                    <td class="table-warning" style="font-size: 20px">{{ checks[n] }}</td>
+            {% endif %}
+            </tr>
+        {% endfor %}
+        {% endif %}
+
+        </tbody>
+        </table>
+    </div>
+    </div>
+</form>
+{% endblock %}
+
